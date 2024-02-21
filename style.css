@@ -1,0 +1,45 @@
+html {
+    background-color: darkseagreen;
+}
+
+#container {
+    display: flex;
+    height: 600px;
+    width: 400px;
+    margin: auto;
+    margin-top: 70px;
+    flex-wrap: wrap;
+    border: 5px solid black;
+    background-color: slategray;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.btn {
+    border: 4px solid black;
+    display: flex;
+    height: 80px;
+    width: 90px;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    background-color: aqua;
+    border-radius: 15px;
+    font-size: 25px;
+}
+
+#output {
+    width: 382px;
+    height: 95px;
+    margin: auto;
+    background-color: peachpuff;
+    border-radius: 0;
+    border: 5px solid black;
+    justify-content: flex-end;
+    font-size: 60px;
+    padding-right: 10px;
+}
+
+#zero {
+    width: 190px;
+}
