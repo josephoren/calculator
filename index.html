@@ -8,24 +8,24 @@
 <body>
 
 <div id="container">
-    <div class="btn" id="output">0</div>
+    <div class="btn" id="output"></div>
     <button class="btn" id="clear">AC</button>
     <button class="btn">+/-</button>
     <button class="btn">%</button>
-    <button class="btn operator">/</button>
-    <button class="btn integer">7</button>
-    <button class="btn integer">8</button>
-    <button class="btn integer">9</button>
-    <button class="btn operator">*</button>
-    <button class="btn integer">4</button>
-    <button class="btn integer">5</button>
-    <button class="btn integer">6</button>
-    <button class="btn operator">-</button>
-    <button class="btn integer">1</button>
-    <button class="btn integer">2</button>
-    <button class="btn integer">3</button>
-    <button class="btn operator">+</button>
-    <button class="btn integer" id="zero">0</button>
+    <button class="btn operator" id="divide">/</button>
+    <button class="btn integer" id="7">7</button>
+    <button class="btn integer" id="8">8</button>
+    <button class="btn integer" id="9">9</button>
+    <button class="btn operator" id="multiply">*</button>
+    <button class="btn integer" id="4">4</button>
+    <button class="btn integer" id="5">5</button>
+    <button class="btn integer" id="6">6</button>
+    <button class="btn operator" id="subtract">-</button>
+    <button class="btn integer" id="1">1</button>
+    <button class="btn integer" id="2">2</button>
+    <button class="btn integer" id="3">3</button>
+    <button class="btn operator" id="add">+</button>
+    <button class="btn integer" id="0" style="width: 190px;">0</button>
     <button class="btn">.</button>
     <button class="btn">=</button>
 
@@ -35,14 +35,44 @@
 
 const integer = document.querySelectorAll('.integer')
 const operator = document.querySelectorAll('.operator')
+const output = document.querySelector('#output')
 
+let currentOutput = 0
+output.textContent = currentOutput
 
-
-operator.addEventListener('onclick', )
+for (i = 0; i < integer.length; i++) {
+integer[i].addEventListener('click', () => {
+    updateOutput()
+})}
 
 function updateOutput() {
+    currentInteger = event.target.id
+    if (currentOutput === 0) {
+    currentOutput = currentInteger
+    output.textContent = currentOutput
+    } else {
+    currentOutput += currentInteger
+    output.textContent = currentOutput
+}}
 
-}
+for (i = 0; i< operator.length; i++) {
+operator[i].addEventListener('click', () => {
+    inputFirst = currentOutput
+    currentOutput = 0
+    switch (event.target.id) {
+        case "divide":
+            console.log('divide')
+            break;
+        case "multiply":
+            console.log('multiply')
+            break;
+        case "subtract":
+            console.log('subtract')
+            break;
+        case "add":
+            console.log('add')
+            break;
+    }})}
 
 function add(inputFirst, inputSecond) {
     return inputFirst + inputSecond
@@ -57,7 +87,7 @@ function multiply(inputFirst, inputSecond) {
 }
 
 function divide(inputFirst, inputSecond) {
- return inputFirst / inputSecond
+    return inputFirst / inputSecond
 }
 
 function operate() {
