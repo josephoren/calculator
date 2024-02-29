@@ -9,9 +9,9 @@
 
 <div id="container">
     <div class="btn" id="output"></div>
-    <button class="btn" id="clear">AC</button>
+    <button class="btn" id="AC">AC</button>
     <button class="btn">+/-</button>
-    <button class="btn">%</button>
+    <button class="btn" id="percentage">%</button>
     <button class="btn operator" id="divide">/</button>
     <button class="btn integer" id="7">7</button>
     <button class="btn integer" id="8">8</button>
@@ -27,7 +27,7 @@
     <button class="btn operator" id="add">+</button>
     <button class="btn integer" id="0" style="width: 190px;">0</button>
     <button class="btn">.</button>
-    <button class="btn">=</button>
+    <button class="btn" id="equals">=</button>
 
 </div>
 
@@ -36,8 +36,14 @@
 const integer = document.querySelectorAll('.integer')
 const operator = document.querySelectorAll('.operator')
 const output = document.querySelector('#output')
+const equal = document.querySelector('#equals')
+const clear = document.querySelector('#AC')
+const percent = document.querySelector('#percentage')
 
 let currentOutput = 0
+let inputFirst
+let inputSecond
+let currentOperator
 output.textContent = currentOutput
 
 for (i = 0; i < integer.length; i++) {
@@ -47,52 +53,90 @@ integer[i].addEventListener('click', () => {
 
 function updateOutput() {
     currentInteger = event.target.id
-    if (currentOutput === 0) {
-    currentOutput = currentInteger
-    output.textContent = currentOutput
+    if (currentOutput.length > 12) {
+        output.textContent = 'ok chill'
     } else {
     currentOutput += currentInteger
-    output.textContent = currentOutput
+    output.textContent = parseInt(currentOutput, 10)
 }}
 
 for (i = 0; i< operator.length; i++) {
 operator[i].addEventListener('click', () => {
-    inputFirst = currentOutput
-    currentOutput = 0
-    switch (event.target.id) {
-        case "divide":
-            console.log('divide')
-            break;
-        case "multiply":
-            console.log('multiply')
-            break;
-        case "subtract":
-            console.log('subtract')
-            break;
-        case "add":
-            console.log('add')
-            break;
-    }})}
+    // currentOperator = event.target.id
+    if (inputSecond === undefined) {
+        currentOperator = event.target.id
+        inputFirst = parseInt(currentOutput)
+        currentOutput = 0
+    }   
+        inputSecond = parseInt(currentOutput)
+        if (inputSecond) {
+        operate(inputFirst, inputSecond)
+        currentOperator = event.target.id
+        currentOutput = 0
+        inputFirst = answer
+        output.textContent = answer
+        }
+})}
 
-function add(inputFirst, inputSecond) {
-    return inputFirst + inputSecond
+function add() {
+    answer = parseInt(inputFirst) + parseInt(inputSecond)
 }
-
-function subtract(inputFirst, inputSecond) {
-    return inputFirst - inputSecond
+function subtract() {
+    answer = inputFirst - inputSecond
 }
-
-function multiply(inputFirst, inputSecond) {
-    return inputFirst * inputSecond
+function multiply() {
+    answer = inputFirst * inputSecond
 }
-
-function divide(inputFirst, inputSecond) {
-    return inputFirst / inputSecond
-}
+function divide() {
+    answer = inputFirst / inputSecond
+    }
 
 function operate() {
-
+    switch (currentOperator) {
+        case 'add':
+            add(inputFirst, inputSecond)
+            break
+        case 'subtract':
+            subtract(inputFirst, inputSecond)
+            break
+        case 'multiply':
+            multiply(inputFirst, inputSecond)
+            break
+        case 'divide':
+            divide(inputFirst, inputSecond)
+            break
+    }
 }
+
+equal.addEventListener('click', () => {
+    inputSecond = currentOutput
+    operate(inputFirst, inputSecond)
+    if (answer > 999999999999) {
+        output.textContent = 'too big'
+    } else {
+    inputFirst = answer
+    inputSecond = 0
+    currentOutput = 0
+    output.textContent = answer
+}})
+
+clear.addEventListener('click', () => {
+    currentOutput = 0
+    currentInteger = 0
+    inputFirst = 0
+    inputSecond = undefined
+    currentOperator = undefined
+    answer = 0
+    output.textContent = currentOutput
+})
+
+percent.addEventListener('click', () => {
+    currentOutput *= .010
+    if (currentOutput.length > 12) {
+        output.textContent = 'no'
+    } else {
+    output.textContent = currentOutput
+}})
 
 </script>
 
