@@ -10,7 +10,7 @@
 <div id="container">
     <div class="btn" id="output"></div>
     <button class="btn" id="AC">AC</button>
-    <button class="btn">+/-</button>
+    <button class="btn" id="negative">+/-</button>
     <button class="btn" id="percentage">%</button>
     <button class="btn operator" id="divide">/</button>
     <button class="btn integer" id="7">7</button>
@@ -26,7 +26,7 @@
     <button class="btn integer" id="3">3</button>
     <button class="btn operator" id="add">+</button>
     <button class="btn integer" id="0" style="width: 190px;">0</button>
-    <button class="btn">.</button>
+    <button class="btn" id="point">.</button>
     <button class="btn" id="equals">=</button>
 
 </div>
@@ -39,6 +39,8 @@ const output = document.querySelector('#output')
 const equal = document.querySelector('#equals')
 const clear = document.querySelector('#AC')
 const percent = document.querySelector('#percentage')
+const decimal = document.querySelector('#point')
+const negative = document.querySelector('#negative')
 
 let currentOutput = 0
 let inputFirst
@@ -57,29 +59,28 @@ function updateOutput() {
         output.textContent = 'ok chill'
     } else {
     currentOutput += currentInteger
-    output.textContent = parseInt(currentOutput, 10)
+    currentOutput = parseFloat(currentOutput)
+    output.textContent = currentOutput
 }}
 
 for (i = 0; i< operator.length; i++) {
 operator[i].addEventListener('click', () => {
-    // currentOperator = event.target.id
     if (inputSecond === undefined) {
         currentOperator = event.target.id
-        inputFirst = parseInt(currentOutput)
+        inputFirst = parseFloat(currentOutput)
+        inputSecond = parseFloat(currentOutput)
         currentOutput = 0
-    }   
-        inputSecond = parseInt(currentOutput)
-        if (inputSecond) {
+    } else {
+        inputSecond = parseFloat(currentOutput)
         operate(inputFirst, inputSecond)
         currentOperator = event.target.id
         currentOutput = 0
         inputFirst = answer
-        output.textContent = answer
-        }
-})}
+        output.textContent = answer        
+}})}
 
 function add() {
-    answer = parseInt(inputFirst) + parseInt(inputSecond)
+    answer = inputFirst + inputSecond
 }
 function subtract() {
     answer = inputFirst - inputSecond
@@ -89,7 +90,7 @@ function multiply() {
 }
 function divide() {
     answer = inputFirst / inputSecond
-    }
+}
 
 function operate() {
     switch (currentOperator) {
@@ -106,17 +107,19 @@ function operate() {
             divide(inputFirst, inputSecond)
             break
     }
-}
+    if (!Number.isInteger(answer)) {
+        parseFloat(answer)
+}}
 
 equal.addEventListener('click', () => {
-    inputSecond = currentOutput
+    inputSecond = parseFloat(currentOutput)
     operate(inputFirst, inputSecond)
     if (answer > 999999999999) {
         output.textContent = 'too big'
     } else {
-    inputFirst = answer
-    inputSecond = 0
     currentOutput = 0
+    inputFirst = answer
+    inputSecond = undefined
     output.textContent = answer
 }})
 
@@ -131,10 +134,20 @@ clear.addEventListener('click', () => {
 })
 
 percent.addEventListener('click', () => {
+    if (Number.isInteger(currentOutput)) {
     currentOutput *= .010
-    if (currentOutput.length > 12) {
-        output.textContent = 'no'
-    } else {
+    output.textContent = currentOutput
+    }})
+
+decimal.addEventListener('click', () => {
+    if (Number.isInteger(currentOutput)) {
+    currentOutput += '.'
+    output.textContent = currentOutput
+    }})
+
+negative.addEventListener('click', () => {
+    if (currentOutput != 0) {
+    currentOutput *= -1
     output.textContent = currentOutput
 }})
 
